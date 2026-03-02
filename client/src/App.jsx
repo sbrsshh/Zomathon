@@ -14,6 +14,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Profile from './pages/Profile';
 import Dashboard from './pages/Dashboard';
 import Admin from './pages/Admin';
+import CreateRestaurant from './pages/CreateRestaurant';
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
                 <Route path="/orders" element={<Orders />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/dashboard/create-restaurant" element={<CreateRestaurant />} />
                 <Route path="/admin" element={<Admin />} />
               </Routes>
             </main>

@@ -99,5 +99,4 @@ Zomathon/
 
 ---
 
-## 🛡️ License
-MIT License. Created with ❤️ by Antigravity.
+
