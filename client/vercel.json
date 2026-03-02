@@ -1,8 +1,0 @@
-{
-    "builds": [
-        {
-            "src": "server/run.py",
-            "use": "@vercel/python"
-        }
-    ]
-}
