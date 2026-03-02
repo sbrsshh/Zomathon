@@ -19,14 +19,18 @@ socketio = SocketIO(cors_allowed_origins="*")
 def create_app():
     app = Flask(__name__)
     
+    # ✅ Get database URL from environment
     database_url = os.getenv('DATABASE_URL')
+
+    # Fix for postgres:// issue
     if database_url and database_url.startswith("postgres://"):
         database_url = database_url.replace("postgres://", "postgresql://", 1)
-        
+
     app.config['SQLALCHEMY_DATABASE_URI'] = database_url
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
     
+    # ✅ Initialize extensions
     db.init_app(app)
     bcrypt.init_app(app)
     jwt.init_app(app)
@@ -34,6 +38,10 @@ def create_app():
     socketio.init_app(app)
     CORS(app)
 
+    # ✅ Import models BEFORE creating tables
+    from app.models import user, restaurant, menu, order, booking, coupon, payment, interaction
+
+    # ✅ Register blueprints
     from app.routes.auth import auth_bp
     from app.routes.restaurant import restaurant_bp
     from app.routes.menu import menu_bp
@@ -55,5 +63,9 @@ def create_app():
     app.register_blueprint(booking_bp, url_prefix='/api/bookings')
 
     from app import socket_events
+
+    # ✅ CREATE TABLES (IMPORTANT FIX)
+    with app.app_context():
+        db.create_all()
 
     return app
