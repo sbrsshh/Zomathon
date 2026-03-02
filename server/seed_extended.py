@@ -5,10 +5,7 @@ from app.models.restaurant import Restaurant, MenuItem
 def seed_data():
     app = create_app()
     with app.app_context():
-        # Clear existing data if needed or just add new
-        # For simplicity, we'll just add new ones if they don't exist
         
-        # 1. Existing Owner (John Doe)
         owner = User.query.filter_by(email="owner@zomathon.com").first()
         if not owner:
             owner = User(full_name="John Doe", email="owner@zomathon.com", phone="1234567890", role="owner")
@@ -16,7 +13,6 @@ def seed_data():
             db.session.add(owner)
             db.session.commit()
 
-        # Add or update "The Spice Route"
         spice_route_res = Restaurant.query.filter_by(name="The Spice Route").first()
         if not spice_route_res:
             spice_route_res = Restaurant(
@@ -41,14 +37,12 @@ def seed_data():
             ])
             print("The Spice Route restaurant added.")
         
-        # Update "The Spice Route" to include "Thali"
         if spice_route_res.cuisine_type != "Indian, Mughlai, Thali":
             spice_route_res.cuisine_type = "Indian, Mughlai, Thali"
             db.session.add(spice_route_res) # Mark for update
             print("The Spice Route cuisine updated to include Thali.")
 
 
-        # 2. Pizza Palace
         if not Restaurant.query.filter_by(name="Pizza Palace").first():
             pizza_res = Restaurant(
                 owner=owner,
@@ -71,7 +65,6 @@ def seed_data():
                 MenuItem(restaurant_id=pizza_res.id, name="Garlic Breadsticks", price=149, category="Sides")
             ])
 
-        # 3. Burger Kingly
         if not Restaurant.query.filter_by(name="Burger Kingly").first():
             burger_res = Restaurant(
                 owner=owner,
@@ -94,7 +87,6 @@ def seed_data():
                 MenuItem(restaurant_id=burger_res.id, name="Peri Peri Fries", price=129, category="Sides")
             ])
 
-        # 4. Royal Biryani House
         if not Restaurant.query.filter_by(name="Royal Biryani House").first():
             biryani_res = Restaurant(
                 owner=owner,
@@ -117,7 +109,6 @@ def seed_data():
                 MenuItem(restaurant_id=biryani_res.id, name="Gulab Jamun (2 pcs)", price=80, category="Dessert", image_url="https://images.unsplash.com/photo-1593854123512-1f4a47568f6a?auto=format&fit=crop&w=400")
             ])
 
-        # 5. Sweet Treats Bakery
         if not Restaurant.query.filter_by(name="Sweet Treats Bakery").first():
             bake_res = Restaurant(
                 owner=owner,
@@ -140,7 +131,6 @@ def seed_data():
                 MenuItem(restaurant_id=bake_res.id, name="Blueberry Cheesecake Slice", price=180, category="Pastry")
             ])
 
-        # 6. Rolls & Wraps
         if not Restaurant.query.filter_by(name="Rolls & Wraps").first():
             rolls_res = Restaurant(
                 owner=owner,
@@ -164,7 +154,29 @@ def seed_data():
             ])
             print("Rolls & Wraps restaurant added.")
 
-        # Update images for existing ones to ensure they are working
+        if not Restaurant.query.filter_by(name="Kathi Junction").first():
+            kathi_res = Restaurant(
+                owner=owner,
+                name="Kathi Junction",
+                description="The ultimate destination for authentic Kati rolls.",
+                cuisine_type="Rolls, North Indian",
+                rating=4.5,
+                avg_price=200,
+                delivery_time="15-20 min",
+                image_url="https://images.unsplash.com/photo-1544378730-8b5104b18790?w=800",
+                address="Malad West, Mumbai",
+                is_approved=True
+            )
+            db.session.add(kathi_res)
+            db.session.flush()
+            
+            db.session.add_all([
+                MenuItem(restaurant_id=kathi_res.id, name="Malai Paneer Roll", price=140, category="Rolls", image_url="https://images.unsplash.com/photo-1510629708945-8f65e231019d?w=400"),
+                MenuItem(restaurant_id=kathi_res.id, name="Double Chicken Egg Roll", price=170, category="Rolls", is_veg=False),
+                MenuItem(restaurant_id=kathi_res.id, name="Masala Chai", price=40, category="Beverages")
+            ])
+            print("Kathi Junction restaurant added.")
+
         for name, url in [
             ("Pizza Palace", "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=800"),
             ("Burger Kingly", "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=800"),
@@ -177,7 +189,6 @@ def seed_data():
             if r:
                 r.image_url = url
 
-        # Update specific menu item images
         menu_updates = [
             ("Chicken Dum Biryani", "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=400"),
             ("Veg Hyderabadi Biryani", "https://images.unsplash.com/photo-1633945274405-b6c8069047b0?auto=format&fit=crop&w=400"),

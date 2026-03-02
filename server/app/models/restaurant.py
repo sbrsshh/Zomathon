@@ -13,6 +13,8 @@ class Restaurant(db.Model):
     delivery_time = db.Column(db.String(20))
     image_url = db.Column(db.String(255))
     address = db.Column(db.String(255))
+    lat = db.Column(db.Numeric(10, 8))
+    lng = db.Column(db.Numeric(11, 8))
     is_approved = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
@@ -31,6 +33,8 @@ class Restaurant(db.Model):
             "delivery_time": self.delivery_time,
             "image_url": self.image_url,
             "address": self.address,
+            "lat": float(self.lat) if self.lat else None,
+            "lng": float(self.lng) if self.lng else None,
             "is_approved": self.is_approved,
             "menu": [item.to_dict() for item in self.menu_items]
         }

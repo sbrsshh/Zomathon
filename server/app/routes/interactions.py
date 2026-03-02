@@ -19,7 +19,6 @@ def add_review():
         comment=data.get('comment')
     )
     
-    # Update restaurant average rating
     restaurant = Restaurant.query.get(data.get('restaurant_id'))
     reviews = Review.query.filter_by(restaurant_id=restaurant.id).all()
     total_rating = sum([r.rating for r in reviews]) + data.get('rating')

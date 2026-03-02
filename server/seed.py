@@ -5,20 +5,16 @@ from app.models.restaurant import Restaurant, MenuItem
 def seed_data():
     app = create_app()
     with app.app_context():
-        # Create tables
         db.create_all()
         
-        # Check if already seeded
         if User.query.filter_by(email="admin@zomathon.com").first():
             print("Database already seeded.")
             return
 
-        # 1. Create User/Owner
         owner = User(full_name="John Doe", email="owner@zomathon.com", phone="1234567890", role="owner")
         owner.set_password("password123")
         db.session.add(owner)
         
-        # 2. Create Restaurant
         res = Restaurant(
             owner=owner,
             name="The Spice Route",
@@ -33,7 +29,6 @@ def seed_data():
         )
         db.session.add(res)
         
-        # 3. Create Menu Items
         db.session.flush() # Get res.id
         
         item1 = MenuItem(

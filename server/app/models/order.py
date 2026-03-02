@@ -15,7 +15,6 @@ class Order(db.Model):
 
     items = db.relationship('OrderItem', backref='order', lazy=True)
     tracking = db.relationship('DeliveryTracking', backref='order', uselist=False, lazy=True)
-    # restaurant is provided by backref in Restaurant model
 
     def to_dict(self):
         from app.models.restaurant import Restaurant # Local import to avoid circular dependency if needed, but Order usually knows Restaurant

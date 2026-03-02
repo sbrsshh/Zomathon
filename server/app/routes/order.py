@@ -36,7 +36,6 @@ def place_order():
     
     db.session.commit()
     
-    # Notify restaurant owner via Socket.io
     socketio.emit('new_order', new_order.to_dict(), room=f"restaurant_{new_order.restaurant_id}")
     print(f"Emitted new_order for restaurant_{new_order.restaurant_id}")
     
@@ -57,7 +56,6 @@ def update_order_status(id):
     order.status = data.get('status')
     db.session.commit()
     
-    # Notify user via Socket.io
     socketio.emit('order_status_update', {"order_id": order.id, "status": order.status}, room=f"user_{order.user_id}")
     
     return jsonify(order.to_dict()), 200
@@ -69,7 +67,6 @@ def restaurant_orders(restaurant_id):
     user_id = get_jwt_identity()
     restaurant = Restaurant.query.get_or_404(restaurant_id)
     
-    # Ensure the user owns this restaurant
     if restaurant.owner_id != int(user_id):
         return jsonify({"msg": "Unauthorized access to these orders"}), 403
         
