@@ -1,9 +1,9 @@
 from flask import Blueprint, request, jsonify
-from app import db, socketio
-from app.models.order import Order, OrderItem
-from app.models.restaurant import MenuItem
+from server.app import db, socketio
+from server.app.models.order import Order, OrderItem
+from server.app.models.restaurant import MenuItem
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from app.middleware.auth import roles_required
+from server.app.middleware.auth import roles_required
 
 order_bp = Blueprint('order', __name__)
 
@@ -63,7 +63,7 @@ def update_order_status(id):
 @order_bp.route('/restaurant/<int:restaurant_id>', methods=['GET'])
 @roles_required('owner', 'admin')
 def restaurant_orders(restaurant_id):
-    from app.models.restaurant import Restaurant
+    from server.app.models.restaurant import Restaurant
     user_id = get_jwt_identity()
     restaurant = Restaurant.query.get_or_404(restaurant_id)
     

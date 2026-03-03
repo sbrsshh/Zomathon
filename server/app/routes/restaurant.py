@@ -1,10 +1,10 @@
 import math
 from flask import Blueprint, request, jsonify
-from app import db
-from app.models.restaurant import Restaurant, MenuItem
-from app.models.order import Order
-from app.models.user import Address
-from app.middleware.auth import roles_required
+from server.app import db
+from server.app.models.restaurant import Restaurant, MenuItem
+from server.app.models.order import Order
+from server.app.models.user import Address
+from server.app.middleware.auth import roles_required
 from flask_jwt_extended import jwt_required, get_jwt_identity, verify_jwt_in_request
 from sqlalchemy import func, or_
 
@@ -95,7 +95,7 @@ def get_recommendations():
                 for t in types:
                     preferred_cuisines[t] = preferred_cuisines.get(t, 0) + 1
         
-        from app.models.interactions import Favorite
+        from server.app.models.interactions import Favorite
         favs = Favorite.query.filter_by(user_id=user_id).all()
         favorite_ids = {f.restaurant_id for f in favs}
 
